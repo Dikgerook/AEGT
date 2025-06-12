@@ -1,0 +1,43 @@
+{
+  "name": "aegisum-tap2earn",
+  "version": "1.0.0",
+  "description": "Telegram WebApp bot for Aegisum Tap2Earn game on TON blockchain",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "cd frontend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "cd frontend && npm test",
+    "test:backend": "cd backend && npm test",
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:backend": "cd backend && npm run lint",
+    "db:setup": "cd backend && npm run db:setup",
+    "db:migrate": "cd backend && npm run db:migrate",
+    "db:seed": "cd backend && npm run db:seed",
+    "start": "cd backend && npm start",
+    "deploy": "bash deployment/deploy.sh"
+  },
+  "keywords": [
+    "telegram",
+    "webapp",
+    "ton",
+    "blockchain",
+    "mining",
+    "tap2earn",
+    "aegisum"
+  ],
+  "author": "Aegisum Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}

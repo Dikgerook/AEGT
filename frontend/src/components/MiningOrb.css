@@ -1,0 +1,396 @@
+/* Mining Orb Styles - IEM Inspired */
+.mining-orb-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-xl);
+}
+
+/* Background Glow */
+.orb-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle,
+    rgba(30, 144, 255, 0.1) 0%,
+    rgba(30, 144, 255, 0.05) 50%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  transition: all var(--transition-slow);
+  pointer-events: none;
+}
+
+.orb-glow-active {
+  background: radial-gradient(
+    circle,
+    var(--level-color, #1E90FF) 0%,
+    rgba(16, 185, 129, 0.1) 30%,
+    rgba(30, 144, 255, 0.05) 60%,
+    transparent 80%
+  );
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* Main Orb */
+.mining-orb {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 144, 255, 0.2) 0%,
+    rgba(16, 185, 129, 0.1) 50%,
+    rgba(139, 92, 246, 0.2) 100%
+  );
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.mining-orb::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    45deg,
+    var(--level-color, #1E90FF),
+    transparent,
+    var(--level-color, #1E90FF)
+  );
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.5;
+  animation: borderRotate 4s linear infinite;
+}
+
+@keyframes borderRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Orb Rings */
+.orb-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.orb-ring-outer {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.orb-ring-inner {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.ring-segment {
+  width: 20px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--level-color, #1E90FF), transparent);
+  border-radius: 2px;
+  position: absolute;
+}
+
+.ring-segment:nth-child(1) { transform: rotate(0deg) translateY(-78px); }
+.ring-segment:nth-child(2) { transform: rotate(90deg) translateY(-78px); }
+.ring-segment:nth-child(3) { transform: rotate(180deg) translateY(-78px); }
+.ring-segment:nth-child(4) { transform: rotate(270deg) translateY(-78px); }
+
+.ring-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--level-color, #1E90FF);
+  border-radius: 50%;
+  position: absolute;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.ring-dot:nth-child(1) { transform: rotate(0deg) translateY(-58px); }
+.ring-dot:nth-child(2) { transform: rotate(60deg) translateY(-58px); }
+.ring-dot:nth-child(3) { transform: rotate(120deg) translateY(-58px); }
+.ring-dot:nth-child(4) { transform: rotate(180deg) translateY(-58px); }
+.ring-dot:nth-child(5) { transform: rotate(240deg) translateY(-58px); }
+.ring-dot:nth-child(6) { transform: rotate(300deg) translateY(-58px); }
+
+/* Orb Core */
+.orb-core {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.core-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--level-color, #1E90FF);
+  z-index: 2;
+}
+
+/* Progress Ring */
+.progress-ring {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 100px;
+  height: 100px;
+  transform: rotate(-90deg);
+  z-index: 1;
+}
+
+.progress-ring-background {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 2;
+}
+
+.progress-ring-progress {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 5px currentColor);
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+/* Level Badge */
+.level-badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: var(--level-color, #1E90FF);
+  color: white;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-lg);
+  font-size: 0.75rem;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Mining Particles */
+.mining-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* Status */
+.orb-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  text-align: center;
+}
+
+.status-indicator {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  transition: all var(--transition-normal);
+}
+
+.status-idle {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+}
+
+.status-active {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));
+  color: #10B981;
+  border-color: rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+.progress-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--level-color, #1E90FF);
+  text-shadow: 0 0 10px currentColor;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mining-orb-container {
+    padding: var(--spacing-lg);
+  }
+  
+  .mining-orb {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .orb-ring-outer {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .orb-ring-inner {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .orb-core {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .core-inner svg {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .progress-ring {
+    width: 90px;
+    height: 90px;
+    top: -10px;
+    left: -10px;
+  }
+  
+  .orb-glow {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mining-orb {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .orb-ring-outer {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .orb-ring-inner {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .orb-core {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .core-inner svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .progress-ring {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .orb-glow {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .ring-segment:nth-child(1) { transform: rotate(0deg) translateY(-58px); }
+  .ring-segment:nth-child(2) { transform: rotate(90deg) translateY(-58px); }
+  .ring-segment:nth-child(3) { transform: rotate(180deg) translateY(-58px); }
+  .ring-segment:nth-child(4) { transform: rotate(270deg) translateY(-58px); }
+  
+  .ring-dot:nth-child(1) { transform: rotate(0deg) translateY(-38px); }
+  .ring-dot:nth-child(2) { transform: rotate(60deg) translateY(-38px); }
+  .ring-dot:nth-child(3) { transform: rotate(120deg) translateY(-38px); }
+  .ring-dot:nth-child(4) { transform: rotate(180deg) translateY(-38px); }
+  .ring-dot:nth-child(5) { transform: rotate(240deg) translateY(-38px); }
+  .ring-dot:nth-child(6) { transform: rotate(300deg) translateY(-38px); }
+}
+
+/* Dark/Light theme adjustments */
+@media (prefers-color-scheme: light) {
+  .mining-orb {
+    background: linear-gradient(
+      135deg,
+      rgba(59, 130, 246, 0.1) 0%,
+      rgba(16, 185, 129, 0.05) 50%,
+      rgba(139, 92, 246, 0.1) 100%
+    );
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .orb-core {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.05) 0%,
+      rgba(0, 0, 0, 0.02) 100%
+    );
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .status-idle {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-secondary);
+  }
+  
+  .level-badge {
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+}
