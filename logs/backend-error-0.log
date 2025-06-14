@@ -1,0 +1,110 @@
+2025-06-14T16:17:27: Error: listen EADDRINUSE: address already in use 0.0.0.0:3001
+2025-06-14T16:17:27:     at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+2025-06-14T16:17:27:     at listenInCluster (node:net:1965:12)
+2025-06-14T16:17:27:     at doListen (node:net:2139:7)
+2025-06-14T16:17:27:     at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+2025-06-14T16:17:27:   code: 'EADDRINUSE',
+2025-06-14T16:17:27:   errno: -98,
+2025-06-14T16:17:27:   syscall: 'listen',
+2025-06-14T16:17:27:   address: '0.0.0.0',
+2025-06-14T16:17:27:   port: 3001
+2025-06-14T16:17:27: }
+2025-06-14T16:17:29: Error: listen EADDRINUSE: address already in use 0.0.0.0:3001
+2025-06-14T16:17:29:     at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+2025-06-14T16:17:29:     at listenInCluster (node:net:1965:12)
+2025-06-14T16:17:29:     at doListen (node:net:2139:7)
+2025-06-14T16:17:29:     at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+2025-06-14T16:17:29:   code: 'EADDRINUSE',
+2025-06-14T16:17:29:   errno: -98,
+2025-06-14T16:17:29:   syscall: 'listen',
+2025-06-14T16:17:29:   address: '0.0.0.0',
+2025-06-14T16:17:29:   port: 3001
+2025-06-14T16:17:29: }
+2025-06-14T16:17:31: Error: listen EADDRINUSE: address already in use 0.0.0.0:3001
+2025-06-14T16:17:31:     at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+2025-06-14T16:17:31:     at listenInCluster (node:net:1965:12)
+2025-06-14T16:17:31:     at doListen (node:net:2139:7)
+2025-06-14T16:17:31:     at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+2025-06-14T16:17:31:   code: 'EADDRINUSE',
+2025-06-14T16:17:31:   errno: -98,
+2025-06-14T16:17:31:   syscall: 'listen',
+2025-06-14T16:17:31:   address: '0.0.0.0',
+2025-06-14T16:17:31:   port: 3001
+2025-06-14T16:17:31: }
+2025-06-14T16:17:34: Error: listen EADDRINUSE: address already in use 0.0.0.0:3001
+2025-06-14T16:17:34:     at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+2025-06-14T16:17:34:     at listenInCluster (node:net:1965:12)
+2025-06-14T16:17:34:     at doListen (node:net:2139:7)
+2025-06-14T16:17:34:     at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+2025-06-14T16:17:34:   code: 'EADDRINUSE',
+2025-06-14T16:17:34:   errno: -98,
+2025-06-14T16:17:34:   syscall: 'listen',
+2025-06-14T16:17:34:   address: '0.0.0.0',
+2025-06-14T16:17:34:   port: 3001
+2025-06-14T16:17:34: }
+2025-06-14T16:17:36: Error: listen EADDRINUSE: address already in use 0.0.0.0:3001
+2025-06-14T16:17:36:     at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+2025-06-14T16:17:36:     at listenInCluster (node:net:1965:12)
+2025-06-14T16:17:36:     at doListen (node:net:2139:7)
+2025-06-14T16:17:36:     at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+2025-06-14T16:17:36:   code: 'EADDRINUSE',
+2025-06-14T16:17:36:   errno: -98,
+2025-06-14T16:17:36:   syscall: 'listen',
+2025-06-14T16:17:36:   address: '0.0.0.0',
+2025-06-14T16:17:36:   port: 3001
+2025-06-14T16:17:36: }
+2025-06-14T16:17:38: Error: listen EADDRINUSE: address already in use 0.0.0.0:3001
+2025-06-14T16:17:38:     at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+2025-06-14T16:17:38:     at listenInCluster (node:net:1965:12)
+2025-06-14T16:17:38:     at doListen (node:net:2139:7)
+2025-06-14T16:17:38:     at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+2025-06-14T16:17:38:   code: 'EADDRINUSE',
+2025-06-14T16:17:38:   errno: -98,
+2025-06-14T16:17:38:   syscall: 'listen',
+2025-06-14T16:17:38:   address: '0.0.0.0',
+2025-06-14T16:17:38:   port: 3001
+2025-06-14T16:17:38: }
+2025-06-14T16:17:40: Error: listen EADDRINUSE: address already in use 0.0.0.0:3001
+2025-06-14T16:17:40:     at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+2025-06-14T16:17:40:     at listenInCluster (node:net:1965:12)
+2025-06-14T16:17:40:     at doListen (node:net:2139:7)
+2025-06-14T16:17:40:     at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+2025-06-14T16:17:40:   code: 'EADDRINUSE',
+2025-06-14T16:17:40:   errno: -98,
+2025-06-14T16:17:40:   syscall: 'listen',
+2025-06-14T16:17:40:   address: '0.0.0.0',
+2025-06-14T16:17:40:   port: 3001
+2025-06-14T16:17:40: }
+2025-06-14T16:17:43: Error: listen EADDRINUSE: address already in use 0.0.0.0:3001
+2025-06-14T16:17:43:     at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+2025-06-14T16:17:43:     at listenInCluster (node:net:1965:12)
+2025-06-14T16:17:43:     at doListen (node:net:2139:7)
+2025-06-14T16:17:43:     at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+2025-06-14T16:17:43:   code: 'EADDRINUSE',
+2025-06-14T16:17:43:   errno: -98,
+2025-06-14T16:17:43:   syscall: 'listen',
+2025-06-14T16:17:43:   address: '0.0.0.0',
+2025-06-14T16:17:43:   port: 3001
+2025-06-14T16:17:43: }
+2025-06-14T16:17:45: Error: listen EADDRINUSE: address already in use 0.0.0.0:3001
+2025-06-14T16:17:45:     at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+2025-06-14T16:17:45:     at listenInCluster (node:net:1965:12)
+2025-06-14T16:17:45:     at doListen (node:net:2139:7)
+2025-06-14T16:17:45:     at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+2025-06-14T16:17:45:   code: 'EADDRINUSE',
+2025-06-14T16:17:45:   errno: -98,
+2025-06-14T16:17:45:   syscall: 'listen',
+2025-06-14T16:17:45:   address: '0.0.0.0',
+2025-06-14T16:17:45:   port: 3001
+2025-06-14T16:17:45: }
+2025-06-14T16:17:47: Error: listen EADDRINUSE: address already in use 0.0.0.0:3001
+2025-06-14T16:17:47:     at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+2025-06-14T16:17:47:     at listenInCluster (node:net:1965:12)
+2025-06-14T16:17:47:     at doListen (node:net:2139:7)
+2025-06-14T16:17:47:     at process.processTicksAndRejections (node:internal/process/task_queues:83:21) {
+2025-06-14T16:17:47:   code: 'EADDRINUSE',
+2025-06-14T16:17:47:   errno: -98,
+2025-06-14T16:17:47:   syscall: 'listen',
+2025-06-14T16:17:47:   address: '0.0.0.0',
+2025-06-14T16:17:47:   port: 3001
+2025-06-14T16:17:47: }
