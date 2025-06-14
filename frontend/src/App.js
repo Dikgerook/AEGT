@@ -79,7 +79,7 @@ function App() {
   }
 
   return (
-    <Router basename="/webapp">
+    <Router>
       <div className="app">
         <AnimatePresence mode="wait">
           <Routes>
