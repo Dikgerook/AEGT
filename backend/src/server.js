@@ -8,8 +8,8 @@ require('dotenv').config();
 
 // Import utilities and middleware
 const logger = require('./utils/logger');
-const errorHandler = require('./middleware/errorHandler');
-const authMiddleware = require('./middleware/auth');
+const { errorHandler } = require('./middleware/errorHandler');
+const { authMiddleware } = require('./middleware/auth');
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -95,7 +95,7 @@ app.use('/api/mining', authMiddleware, miningRoutes);
 app.use('/api/upgrades', authMiddleware, upgradeRoutes);
 app.use('/api/energy', authMiddleware, energyRoutes);
 app.use('/api/ton', authMiddleware, tonRoutes);
-app.use('/api/admin', authMiddleware, adminRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.use('*', (req, res) => {
   res.status(404).json({
@@ -131,6 +131,8 @@ const gracefulShutdown = async (signal) => {
   }
 };
 
+let server;
+
 const startServer = async () => {
   try {
     await databaseService.initialize();
@@ -139,7 +141,7 @@ const startServer = async () => {
     logger.info('Redis initialized');
     await miningService.initialize();
     logger.info('Mining service initialized');
-    const server = app.listen(PORT, HOST, () => {
+    server = app.listen(PORT, HOST, () => {
       logger.info(`🚀 Aegisum API server running on ${HOST}:${PORT}`);
       logger.info(`📱 Environment: ${process.env.NODE_ENV}`);
       logger.info(`🔗 CORS origins: ${process.env.CORS_ORIGIN}`);
@@ -169,8 +171,167 @@ module.exports = app;
 
 // Telegram Bot Integration
 const TelegramBot = require('node-telegram-bot-api');
-const token = process.env.TELEGRAM_TOKEN || '7820209188:AAGWlH9P_49d15934bsyZGQdKE93r9ItWQ4';
-const bot = new TelegramBot(token, { polling: true });
-bot.on('message', (msg) => {
-  bot.sendMessage(msg.chat.id, 'Welcome to Aegisum Tap2Earn!');
-});
+const token = process.env.TELEGRAM_BOT_TOKEN || '7820209188:AAGWlH9P_49d15934bsyZGQdKE93r9ItWQ4';
+
+// Admin Telegram ID
+const ADMIN_TELEGRAM_ID = 1651155083;
+
+let bot;
+if (token && process.env.NODE_ENV !== 'test') {
+  bot = new TelegramBot(token, { polling: true });
+  
+  // Welcome message with WebApp button
+  bot.onText(/\/start/, (msg) => {
+    const chatId = msg.chat.id;
+    const userId = msg.from.id;
+    
+    const welcomeMessage = `🎮 Welcome to Aegisum Tap2Earn!
+    
+🚀 Start mining AEGT tokens with your virtual miner
+⚡ Upgrade your equipment with TON payments
+💎 Earn rewards through passive mining
+    
+Click the button below to launch the WebApp:`;
+    
+    const options = {
+      reply_markup: {
+        inline_keyboard: [[
+          {
+            text: '🎮 Launch Aegisum WebApp',
+            web_app: { url: 'https://webapp.aegisum.co.za' }
+          }
+        ]]
+      }
+    };
+    
+    bot.sendMessage(chatId, welcomeMessage, options);
+    
+    // Log user interaction
+    logger.info(`User ${userId} started the bot`);
+  });
+  
+  // Admin commands
+  bot.onText(/\/admin/, async (msg) => {
+    const chatId = msg.chat.id;
+    const userId = msg.from.id;
+    
+    if (userId !== ADMIN_TELEGRAM_ID) {
+      bot.sendMessage(chatId, '❌ Access denied. Admin privileges required.');
+      return;
+    }
+    
+    try {
+      // Get system stats
+      const userCount = await databaseService.query('SELECT COUNT(*) as count FROM users');
+      const activeMiners = await databaseService.query('SELECT COUNT(*) as count FROM active_mining');
+      const totalBlocks = await databaseService.query('SELECT COUNT(*) as count FROM mining_blocks');
+      
+      const adminMessage = `🔧 Admin Panel - Aegisum Stats
+      
+👥 Total Users: ${userCount.rows[0].count}
+⛏️ Active Miners: ${activeMiners.rows[0].count}
+📦 Total Blocks Mined: ${totalBlocks.rows[0].count}
+      
+Available commands:
+/stats - Detailed statistics
+/users - User management
+/broadcast - Send message to all users`;
+      
+      bot.sendMessage(chatId, adminMessage);
+    } catch (error) {
+      logger.error('Admin command error:', error);
+      bot.sendMessage(chatId, '❌ Error fetching admin data');
+    }
+  });
+  
+  // Detailed stats for admin
+  bot.onText(/\/stats/, async (msg) => {
+    const chatId = msg.chat.id;
+    const userId = msg.from.id;
+    
+    if (userId !== ADMIN_TELEGRAM_ID) {
+      bot.sendMessage(chatId, '❌ Access denied. Admin privileges required.');
+      return;
+    }
+    
+    try {
+      const stats = await databaseService.query(`
+        SELECT 
+          COUNT(*) as total_users,
+          COUNT(CASE WHEN created_at > NOW() - INTERVAL '24 hours' THEN 1 END) as new_users_24h,
+          COUNT(CASE WHEN last_activity > NOW() - INTERVAL '24 hours' THEN 1 END) as active_users_24h,
+          SUM(aegt_balance) as total_aegt,
+          AVG(miner_level) as avg_miner_level
+        FROM users
+      `);
+      
+      const miningStats = await databaseService.query(`
+        SELECT 
+          COUNT(*) as total_blocks,
+          SUM(reward) as total_rewards,
+          AVG(hashrate) as avg_hashrate
+        FROM mining_blocks
+        WHERE mined_at > NOW() - INTERVAL '24 hours'
+      `);
+      
+      const row = stats.rows[0];
+      const miningRow = miningStats.rows[0];
+      
+      const statsMessage = `📊 Detailed Statistics (24h)
+      
+👥 Users:
+• Total: ${row.total_users}
+• New (24h): ${row.new_users_24h}
+• Active (24h): ${row.active_users_24h}
+• Avg Miner Level: ${parseFloat(row.avg_miner_level || 0).toFixed(1)}
+
+⛏️ Mining (24h):
+• Blocks Mined: ${miningRow.total_blocks || 0}
+• Total Rewards: ${(miningRow.total_rewards || 0) / 1000000000} AEGT
+• Avg Hashrate: ${parseFloat(miningRow.avg_hashrate || 0).toFixed(1)} H/s
+
+💰 Economy:
+• Total AEGT in circulation: ${(row.total_aegt || 0) / 1000000000} AEGT`;
+      
+      bot.sendMessage(chatId, statsMessage);
+    } catch (error) {
+      logger.error('Stats command error:', error);
+      bot.sendMessage(chatId, '❌ Error fetching statistics');
+    }
+  });
+  
+  // Help command
+  bot.onText(/\/help/, (msg) => {
+    const chatId = msg.chat.id;
+    
+    const helpMessage = `ℹ️ Aegisum Tap2Earn Help
+    
+🎮 How to play:
+1. Launch the WebApp using /start
+2. Your miner starts automatically
+3. Earn AEGT tokens every 3 minutes
+4. Upgrade your miner with TON
+5. Manage your energy levels
+
+💡 Commands:
+/start - Launch the game
+/help - Show this help message
+/stats - Your personal statistics
+
+🔗 Links:
+• Website: aegisum.co.za
+• Support: @AegisumSupport`;
+    
+    bot.sendMessage(chatId, helpMessage);
+  });
+  
+  // Handle all other messages
+  bot.on('message', (msg) => {
+    if (!msg.text || msg.text.startsWith('/')) return;
+    
+    const chatId = msg.chat.id;
+    bot.sendMessage(chatId, '🎮 Welcome to Aegisum! Use /start to launch the WebApp or /help for more information.');
+  });
+  
+  logger.info('Telegram bot initialized successfully');
+}
