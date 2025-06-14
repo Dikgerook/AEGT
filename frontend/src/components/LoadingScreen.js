@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Pickaxe } from 'lucide-react';
+import { Hammer } from 'lucide-react';
 import './LoadingScreen.css';
 
 const LoadingScreen = () => {
@@ -25,7 +25,7 @@ const LoadingScreen = () => {
               scale: { duration: 1, repeat: Infinity, ease: "easeInOut" }
             }}
           >
-            <Pickaxe size={48} />
+            <Hammer size={48} />
           </motion.div>
           
           <motion.h1

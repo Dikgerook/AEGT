@@ -95,7 +95,7 @@ export const useTelegramWebApp = () => {
     if (webApp) {
       webApp.showConfirm(message, callback);
     } else {
-      const result = confirm(message);
+      const result = window.confirm(message);
       callback(result);
     }
   };
@@ -104,7 +104,7 @@ export const useTelegramWebApp = () => {
     if (webApp && webApp.showPopup) {
       webApp.showPopup(params, callback);
     } else {
-      const result = confirm(params.message);
+      const result = window.confirm(params.message);
       callback(result ? 'ok' : 'cancel');
     }
   };

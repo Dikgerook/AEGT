@@ -33,7 +33,7 @@ router.use(userRateLimit(60, 60000)); // 60 requests per minute per user
  */
 router.post('/start', asyncHandler(async (req, res) => {
   const result = await miningService.startMining(req.user.id);
-  
+
   res.json({
     success: true,
     message: 'Mining started successfully',
@@ -48,7 +48,7 @@ router.post('/start', asyncHandler(async (req, res) => {
  */
 router.post('/stop', asyncHandler(async (req, res) => {
   const result = await miningService.stopMining(req.user.id);
-  
+
   res.json({
     success: true,
     message: 'Mining stopped successfully',
@@ -63,7 +63,7 @@ router.post('/stop', asyncHandler(async (req, res) => {
  */
 router.get('/status', asyncHandler(async (req, res) => {
   const status = await miningService.getMiningStatus(req.user.id);
-  
+
   res.json({
     success: true,
     data: status
@@ -75,14 +75,13 @@ router.get('/status', asyncHandler(async (req, res) => {
  * @desc Get mining history
  * @access Private
  */
-router.get('/history', 
+router.get('/history',
   [
     query('page').optional().isInt({ min: 1 }).withMessage('Page must be a positive integer'),
     query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit must be between 1 and 100'),
     query('type').optional().isIn(['all', 'solo', 'pool']).withMessage('Type must be all, solo, or pool')
   ],
   asyncHandler(async (req, res) => {
-    // Validate request
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       throw new ValidationError('Validation failed', errors.array());
@@ -93,7 +92,6 @@ router.get('/history',
     const type = req.query.type || 'all';
     const offset = (page - 1) * limit;
 
-    // Build query based on type filter
     let whereClause = 'WHERE user_id = $1';
     const queryParams = [req.user.id];
 
@@ -103,12 +101,11 @@ router.get('/history',
       whereClause += ' AND is_solo = false';
     }
 
-    // Get mining blocks
     const blocksQuery = `
-      SELECT 
+      SELECT
         id, block_number, block_hash, hashrate, reward, treasury_fee,
         is_solo, energy_used, mined_at
-      FROM mining_blocks 
+      FROM mining_blocks
       ${whereClause}
       ORDER BY mined_at DESC
       LIMIT $${queryParams.length + 1} OFFSET $${queryParams.length + 2}
@@ -118,25 +115,23 @@ router.get('/history',
 
     const blocksResult = await databaseService.query(blocksQuery, queryParams);
 
-    // Get total count
     const countQuery = `
       SELECT COUNT(*) as total
-      FROM mining_blocks 
+      FROM mining_blocks
       ${whereClause}
     `;
 
     const countResult = await databaseService.query(countQuery, [req.user.id]);
     const total = parseInt(countResult.rows[0].total);
 
-    // Calculate statistics
     const statsQuery = `
-      SELECT 
+      SELECT
         COUNT(*) as total_blocks,
         SUM(reward) as total_rewards,
         SUM(CASE WHEN is_solo THEN 1 ELSE 0 END) as solo_blocks,
         AVG(hashrate) as avg_hashrate,
         MAX(mined_at) as last_mining
-      FROM mining_blocks 
+      FROM mining_blocks
       WHERE user_id = $1
     `;
 
@@ -157,7 +152,7 @@ router.get('/history',
           totalBlocks: parseInt(stats.total_blocks) || 0,
           totalRewards: stats.total_rewards || '0',
           soloBlocks: parseInt(stats.solo_blocks) || 0,
-          poolBlocks: parseInt(stats.total_blocks) - parseInt(stats.solo_blocks) || 0,
+          poolBlocks: (parseInt(stats.total_blocks) || 0) - (parseInt(stats.solo_blocks) || 0),
           avgHashrate: Math.round(parseFloat(stats.avg_hashrate)) || 0,
           lastMining: stats.last_mining
         }
@@ -176,7 +171,6 @@ router.get('/blocks',
     query('limit').optional().isInt({ min: 1, max: 50 }).withMessage('Limit must be between 1 and 50')
   ],
   asyncHandler(async (req, res) => {
-    // Validate request
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       throw new ValidationError('Validation failed', errors.array());
@@ -185,7 +179,7 @@ router.get('/blocks',
     const limit = parseInt(req.query.limit) || 10;
 
     const query = `
-      SELECT 
+      SELECT
         mb.id, mb.block_number, mb.block_hash, mb.hashrate, mb.reward,
         mb.is_solo, mb.energy_used, mb.mined_at,
         u.username, u.first_name, u.miner_level
@@ -230,7 +224,6 @@ router.post('/claim/:blockId',
     body('blockId').isInt({ min: 1 }).withMessage('Valid block ID required')
   ],
   asyncHandler(async (req, res) => {
-    // Validate request
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       throw new ValidationError('Validation failed', errors.array());
@@ -238,10 +231,9 @@ router.post('/claim/:blockId',
 
     const blockId = parseInt(req.params.blockId);
 
-    // Check if block exists and belongs to user
     const blockQuery = `
       SELECT id, reward, user_id, mined_at
-      FROM mining_blocks 
+      FROM mining_blocks
       WHERE id = $1 AND user_id = $2
     `;
 
@@ -257,7 +249,6 @@ router.post('/claim/:blockId',
     const block = blockResult.rows[0];
 
     // For now, rewards are auto-claimed, so this endpoint just returns the block info
-    // In future versions, this could handle manual claiming logic
 
     res.json({
       success: true,
@@ -281,7 +272,6 @@ router.get('/leaderboard',
     query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit must be between 1 and 100')
   ],
   asyncHandler(async (req, res) => {
-    // Validate request
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       throw new ValidationError('Validation failed', errors.array());
@@ -314,7 +304,7 @@ router.get('/leaderboard',
  */
 router.get('/stats', asyncHandler(async (req, res) => {
   const statsQuery = `
-    SELECT 
+    SELECT
       COUNT(DISTINCT mb.user_id) as active_miners,
       COUNT(mb.id) as total_blocks,
       SUM(mb.reward) as total_rewards,
@@ -328,7 +318,6 @@ router.get('/stats', asyncHandler(async (req, res) => {
   const statsResult = await databaseService.query(statsQuery);
   const stats = statsResult.rows[0];
 
-  // Get current active miners
   const activeMinersQuery = `
     SELECT COUNT(*) as current_active
     FROM active_mining

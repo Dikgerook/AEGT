@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
-  Pickaxe, 
+  Hammer, 
   Zap, 
   Users, 
   BarChart3, 
@@ -21,7 +21,7 @@ const Layout = () => {
     {
       id: 'mining',
       path: '/mining',
-      icon: Pickaxe,
+      icon: Hammer,
       label: 'Mining',
       color: '#10B981'
     },
@@ -71,7 +71,7 @@ const Layout = () => {
         <div className="header-content">
           <div className="header-logo">
             <div className="logo-icon">
-              <Pickaxe size={24} />
+              <Hammer size={24} />
             </div>
             <h1 className="logo-text">Aegisum</h1>
           </div>

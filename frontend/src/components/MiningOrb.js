@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Cpu, Pickaxe } from 'lucide-react';
+import { Zap, Cpu, Hammer } from 'lucide-react';
 import './MiningOrb.css';
 
 const MiningOrb = ({ isActive, progress, level = 1 }) => {
@@ -110,7 +110,7 @@ const MiningOrb = ({ isActive, progress, level = 1 }) => {
   const getLevelIcon = (level) => {
     if (level >= 5) return Zap;
     if (level >= 3) return Cpu;
-    return Pickaxe;
+    return Hammer;
   };
 
   const LevelIcon = getLevelIcon(level);
